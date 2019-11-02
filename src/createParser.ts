@@ -6,6 +6,7 @@ type Options = {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createParser = (options: Options = {}) => (input: string) => {
     const tokens = tokenize(input)
 

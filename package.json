@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "lint": "eslint \"src/**/*.ts\"",
+    "lint": "eslint \"{src,tests}/**/*.ts\" rollup.config.js",
     "build:types": "tsc -d --emitDeclarationOnly --outDir decl",
     "build:js": "rollup"
   },

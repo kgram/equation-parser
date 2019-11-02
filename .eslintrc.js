@@ -53,9 +53,9 @@ module.exports = {
                 },
             },
         }],
+        // Allow using rest destructuring to omit variables without complaint
+        '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true }],
 
-        // handled by ts
-        'no-unused-vars': 'off',
         'no-undef': 'off',
 
         // does not work with ts-parser because of comments

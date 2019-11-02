@@ -1,6 +1,6 @@
 import { parse } from '../src'
 
- import toVariable from './helpers/toVariable'
+import toVariable from './helpers/toVariable'
 
 test('single argument', () => {
     expect(parse('f(x)')).toEqual({
