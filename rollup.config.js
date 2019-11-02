@@ -1,41 +1,37 @@
-import { eslint } from 'rollup-plugin-eslint'
-import filesize from 'rollup-plugin-filesize'
+// import path from 'path'
 import babel from 'rollup-plugin-babel'
 import resolve from 'rollup-plugin-node-resolve'
-import multiInput from 'rollup-plugin-multi-input'
 
 import pkg from './package.json'
 
-export default [
-    {
-        input: ['src/index.ts', 'src/renderTree.ts', 'src/stringify.ts'],
-        output: [
-            {
-                file: pkg.main,
-                format: 'umd',
-                name: 'EquationParser',
-            },
-            {
-                file: pkg.module,
-                format: 'esm',
-            },
-        ],
-        plugins: [
-            multiInput(),
-            resolve({
-                extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
-            }),
-            eslint({
-                throwOnError: true,
-            }),
-            babel({
-                exclude: 'node_modules/**',
-                extensions: ['.tsx', '.ts', '.jsx', '.js'],
-            }),
-            filesize(),
-        ],
-        watch: {
-            chokidar: true,
+const makeConfig = (input, cjsOutput, esmOutput) =>  ({
+    input,
+    output: [
+        {
+            file: cjsOutput,
+            format: 'cjs',
         },
+        {
+            file: esmOutput,
+            format: 'esm',
+        },
+    ],
+    plugins: [
+        resolve({
+            extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+        }),
+        babel({
+            exclude: 'node_modules/**',
+            extensions: ['.tsx', '.ts', '.jsx', '.js'],
+        }),
+    ],
+    watch: {
+        chokidar: true,
     },
+})
+
+export default [
+    makeConfig('src/index.ts', pkg.main, pkg.module),
+    makeConfig('src/renderTree.ts', 'dist/renderTree.js', 'dist/renderTree.esm.js'),
+    makeConfig('src/stringify.ts', 'dist/stringify.js', 'dist/stringify.esm.js'),
 ]

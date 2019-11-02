@@ -3,15 +3,23 @@
   "version": "0.0.0",
   "description": "Parse equations to an AST",
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
   "repository": "git@github.com:kgram/equation-parser.git",
   "author": "Kristoffer Gram <kristoffer.gram@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "jest",
     "lint": "eslint \"{src,tests}/**/*.ts\" rollup.config.js",
-    "build:types": "tsc -d --emitDeclarationOnly --outDir decl",
-    "build:js": "rollup"
+    "build": "yarn build:types && yarn build:js",
+    "types": "tsc -d --emitDeclarationOnly --outDir dist",
+    "bundle": "rollup -c rollup.config.js",
+    "prepublish": "rimraf dist && yarn lint && yarn test && yarn types && yarn bundle"
   },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {},
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
@@ -22,8 +30,11 @@
     "@typescript-eslint/parser": "^2.6.0",
     "eslint": "^6.6.0",
     "jest": "^24.8.0",
+    "rimraf": "^3.0.0",
     "rollup": "^1.26.3",
+    "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-multi-input": "^1.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "typescript": "^3.6.3"
   },
   "babel": {
