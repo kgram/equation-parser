@@ -7,14 +7,20 @@
   "author": "Kristoffer Gram <kristoffer.gram@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint \"src/**/*.ts\"",
+    "build:types": "tsc -d --emitDeclarationOnly --outDir decl",
+    "build:js": "rollup"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@types/jest": "^24.0.15",
     "@types/node": "^12.7.11",
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
+    "@typescript-eslint/parser": "^2.6.0",
+    "eslint": "^6.6.0",
     "jest": "^24.8.0",
     "typescript": "^3.5.3"
   },
