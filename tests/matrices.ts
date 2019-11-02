@@ -18,7 +18,13 @@ test('vector', () => {
 })
 
 test('vector invalid with nested vector', () => {
-    expect(() => parse('[[a], [b], [c]]')).toThrow()
+    expect(parse('[[a], [b], [c]]')).toEqual({
+        type: 'parser-error',
+        errorType: 'expectedSquareBracket',
+        equation: '[[a], [b], [c]]',
+        position: 4,
+        values: [],
+    })
 })
 
 test('horizontal vector', () => {
