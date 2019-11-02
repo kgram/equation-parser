@@ -2,12 +2,8 @@ import { ParserError } from './ParserError'
 import { tokenize } from './tokenize'
 import { parseSubexpression } from './parseExpression'
 
-type Options = {
-
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createParser = (options: Options = {}) => (input: string) => {
+export const parse = (input: string) => {
     const tokens = tokenize(input)
 
     try {

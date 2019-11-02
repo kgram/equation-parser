@@ -1,4 +1,3 @@
-import { createParser } from './createParser'
 import * as EquationNode from './EquationNode'
 export type EquationNode = EquationNode.EquationNode
 export type EquationNodeVariable = EquationNode.EquationNodeVariable
@@ -26,6 +25,4 @@ export type EquationNodeApproximates = EquationNode.EquationNodeApproximates
 export type EquationNodeMatrix = EquationNode.EquationNodeMatrix
 export type EquationNodeParserError = EquationNode.EquationNodeParserError
 
-const parse = createParser()
-
-export { parse, createParser }
+export { parse } from './parse'
