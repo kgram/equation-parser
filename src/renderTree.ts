@@ -23,7 +23,7 @@ const operatorMap = {
     'power': '^',
 }
 
-function pushTree(tree: EquationNode, buffer: string[] = [], indent: string = '', indentType: 'initial' | 'regular' | 'last' = 'initial') {
+function pushTree(tree: EquationNode, buffer: string[] = [], indent = '', indentType: 'initial' | 'regular' | 'last' = 'initial') {
     let ownIndent = indent
     let descendantIndent = indent
     switch (indentType) {
