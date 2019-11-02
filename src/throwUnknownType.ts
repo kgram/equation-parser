@@ -6,5 +6,5 @@
  */
 export function throwUnknownType(typed: never, getMessage: (type: string) => string): never;
 export function throwUnknownType(typed: { type: string }, getMessage: (type: string) => string) {
-    throw new Error(getMessage((typed && typed.type) || 'unknown'));
+    throw new Error(getMessage((typed && typed.type) || 'unknown'))
 }

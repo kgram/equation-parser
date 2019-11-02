@@ -163,7 +163,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                 }
                 break
 
-            case 'parens-open':
+            case 'parens-open': {
                 const { result, last, terminator } = parseSubexpression(input, tokens, i + 1)
                 if (terminator !== 'parens-close') {
                     throw new ParserError(getTokenPosition(last), 'expectedCloseParens')
@@ -171,7 +171,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                 output.push({ type: 'block', child: result })
                 i = last
                 break
-
+            }
             case 'operator':
                 while (operators.length > 0) {
                     const other = operators[operators.length - 1]

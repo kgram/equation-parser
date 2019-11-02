@@ -42,7 +42,7 @@ export const tokenize = (input: string) => {
             if (lastType === 'number' || lastType === 'name' || lastType === 'parens-close' || lastType === 'matrix-close') {
                 result.push({ type: 'operator', value: 'multiply-implicit', position: i })
             }
-            let end = endOfPattern(input, isCharName, i)
+            const end = endOfPattern(input, isCharName, i)
             result.push({ type: 'name', value: input.substring(i, end), position: i })
             i = end - 1
         } else if (current in operatorMap) {
