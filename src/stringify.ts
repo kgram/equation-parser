@@ -2,7 +2,7 @@ import { EquationNode } from './EquationNode'
 import { throwUnknownType } from './throwUnknownType'
 
 export default function stringify(tree: EquationNode) {
-    const buffer = []
+    const buffer: string[] = []
     stringifyTree(tree, buffer)
     return buffer.join('')
 }
