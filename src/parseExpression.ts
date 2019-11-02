@@ -62,7 +62,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
     const getTokenPosition = (index: number) => tokens[index] && tokens[index].position
 
     const addOperator = (operator: TokenOperator) => {
-        const b = output.pop()!
+        const b = output.pop()
         const a = output.pop()
         const unaryType: typeof unaryOperatorMap[keyof typeof unaryOperatorMap] | undefined = unaryOperatorMap[operator.value as keyof typeof unaryOperatorMap]
         if (a) {
