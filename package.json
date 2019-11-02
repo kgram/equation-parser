@@ -1,0 +1,46 @@
+{
+  "name": "equation-parser",
+  "version": "0.0.0",
+  "description": "Parse equations to an AST",
+  "main": "src/index.js",
+  "repository": "git@github.com:kgram/equation-parser.git",
+  "author": "Kristoffer Gram <kristoffer.gram@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.7.11",
+    "jest": "^24.8.0",
+    "typescript": "^3.5.3"
+  },
+  "babel": {
+    "presets": [
+      "@babel/typescript",
+      "@babel/env"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ]
+  },
+  "jest": {
+    "transform": {
+      "\\.(js|ts|tsx)$": "babel-jest"
+    },
+    "testRegex": "(/tests/(?!helpers/).*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/tests/"
+    ]
+  }
+}
