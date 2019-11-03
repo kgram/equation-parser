@@ -77,6 +77,9 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
     }
 
     const prepareResult = (terminator: Terminator, last: number) => {
+        if (tokens[last].type === 'operator') {
+            throw new ParserError(getTokenPosition(last), 'operatorLast')
+        }
         while(operators.length > 0) {
             addOperator(operators.pop()!)
         }

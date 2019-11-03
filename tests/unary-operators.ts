@@ -67,3 +67,27 @@ test('in block', () => {
         },
     })
 })
+
+test('end of string', () => {
+    expect(parse('5+')).toEqual({
+        type: 'parser-error',
+        errorType: 'operatorLast',
+        equation: '5+',
+        position: 1,
+        values: [],
+    })
+    expect(parse('5-')).toEqual({
+        type: 'parser-error',
+        errorType: 'operatorLast',
+        equation: '5-',
+        position: 1,
+        values: [],
+    })
+    expect(parse('5±')).toEqual({
+        type: 'parser-error',
+        errorType: 'operatorLast',
+        equation: '5±',
+        position: 1,
+        values: [],
+    })
+})
