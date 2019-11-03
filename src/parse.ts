@@ -4,9 +4,9 @@ import { parseSubexpression } from './parseExpression'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const parse = (input: string) => {
-    const tokens = tokenize(input)
-
     try {
+        const tokens = tokenize(input)
+
         const { result, last, terminator } = parseSubexpression(input, tokens, 0)
 
         if (terminator !== 'end') {
