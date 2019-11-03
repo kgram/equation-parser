@@ -14,8 +14,20 @@ test('parses floats', () => {
 })
 
 test('rejects invalid number formats', () => {
-    expect(() => parse('2.3.5')).toThrow()
-    expect(() => parse('2.')).toThrow()
+    expect(parse('2.3.5')).toEqual({
+        type: 'parser-error',
+        errorType: 'invalidNumber',
+        equation: '2.3.5',
+        position: 0,
+        values: [],
+    })
+    expect(parse('2.')).toEqual({
+        type: 'parser-error',
+        errorType: 'invalidNumber',
+        equation: '2.',
+        position: 0,
+        values: [],
+    })
 })
 
 test('parses variables', () => {

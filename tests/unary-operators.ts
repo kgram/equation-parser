@@ -26,7 +26,13 @@ test('by operators', () => {
         },
         b: toNumber(5),
     })
-    expect(() => parse('5--5')).toThrow()
+    expect(parse('5--5')).toEqual({
+        type: 'parser-error',
+        errorType: 'adjecentOperator',
+        equation: '5--5',
+        position: 1,
+        values: [],
+    })
 
     expect(parse('±5-5')).toEqual({
         type: 'minus',
@@ -36,7 +42,13 @@ test('by operators', () => {
         },
         b: toNumber(5),
     })
-    expect(() => parse('5-±5')).toThrow()
+    expect(parse('5*±5')).toEqual({
+        type: 'parser-error',
+        errorType: 'adjecentOperator',
+        equation: '5*±5',
+        position: 1,
+        values: [],
+    })
 })
 
 test('in block', () => {
