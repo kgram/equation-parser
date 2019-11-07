@@ -112,8 +112,8 @@ function pushTree(tree: EquationNode, buffer: string[] = [], indent = '', indent
             break
         case 'parser-error':
             buffer.push(`${ownIndent}${tree.errorType} error`)
-            buffer.push(`${ownIndent}│  ${tree.equation}`)
-            buffer.push(`${ownIndent}└  ${'^'.padStart(tree.position + 1)}`)
+            buffer.push(`${ownIndent}  ${tree.equation}`)
+            buffer.push(`${ownIndent}  ${' '.repeat(tree.position)}${'^'}`)
             break
         default:
             throwUnknownType(tree, (type) => `Equation tree to string: cannot resolve type "${type}"`)
