@@ -109,7 +109,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     // Function
                     const { results, last, terminator } = parseListExpression(input, tokens, i + 2)
                     if (terminator !== 'parens-close') {
-                        throw new ParserError(getTokenPosition(last), 'expectedCloseParens')
+                        throw new ParserError(getTokenPosition(i + 1), 'expectedCloseParens')
                     }
                     output.push({ type: 'function', name: token.value, args: results })
                     i = last
@@ -129,7 +129,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     while (getTokenType(i + 1) === 'matrix-open') {
                         const { results, last, terminator } = parseListExpression(input, tokens, i + 2)
                         if (terminator !== 'matrix-close') {
-                            throw new ParserError(getTokenPosition(last), 'expectedSquareBracket')
+                            throw new ParserError(getTokenPosition(i + 1), 'expectedSquareBracket')
                         }
                         if (values.length > 0 && values[0].length !== results.length) {
                             throw new ParserError(getTokenPosition(i + 1), 'matrixMixedDimension', values[0].length, results.length)
@@ -139,6 +139,9 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                         }
                         values.push(results)
                         i = last
+                    }
+                    if (values.length === 0) {
+                        throw new ParserError(getTokenPosition(i + 1), 'matrixEmpty')
                     }
                     // The last vector-component should be followed by a closing bracket
                     if (getTokenType(i + 1) !== 'matrix-close') {
@@ -155,10 +158,10 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
 
                     const { results, last, terminator } = parseListExpression(input, tokens, i + 1)
                     if (terminator !== 'matrix-close') {
-                        throw new ParserError(getTokenPosition(last), 'expectedSquareBracket')
+                        throw new ParserError(getTokenPosition(i), 'expectedSquareBracket')
                     }
                     if (results.length === 0) {
-                        throw new ParserError(getTokenPosition(i + 1), 'vectorEmpty')
+                        throw new ParserError(getTokenPosition(i), 'vectorEmpty')
                     }
 
                     output.push({ type: 'matrix', n: 1, m: results.length, values: results.map((value) => [value]) })
