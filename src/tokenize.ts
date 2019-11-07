@@ -29,7 +29,7 @@ export const tokenize = (input: string) => {
                 throw new ParserError(i - 1, 'numberWhitespace')
             }
             if (lastType === 'name' || lastType === 'parens-close' || lastType === 'matrix-close') {
-                result.push({ type: 'operator', value: 'multiply-implicit', position: i })
+                result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             const end = endOfPattern(input, isCharNumber, i)
             const value = input.substring(i, end)
@@ -40,7 +40,7 @@ export const tokenize = (input: string) => {
             i = end - 1
         } else if (isCharName.test(current)) {
             if (lastType === 'number' || lastType === 'name' || lastType === 'parens-close' || lastType === 'matrix-close') {
-                result.push({ type: 'operator', value: 'multiply-implicit', position: i })
+                result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             const end = endOfPattern(input, isCharName, i)
             result.push({ type: 'name', value: input.substring(i, end), position: i })
@@ -49,17 +49,22 @@ export const tokenize = (input: string) => {
             if (lastType === 'operator') {
                 throw new ParserError(i - 1, 'adjecentOperator')
             }
-            result.push({ type: 'operator', value: operatorMap[current as keyof typeof operatorMap], position: i })
+            result.push({
+                type: 'operator',
+                value: operatorMap[current as keyof typeof operatorMap],
+                symbol: current as keyof typeof operatorMap,
+                position: i,
+            })
         } else if (current === '(') {
             if (lastType === 'number') {
-                result.push({ type: 'operator', value: 'multiply-implicit', position: i })
+                result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             result.push({ type: 'parens-open', position: i })
         } else if (current === ')') {
             result.push({ type: 'parens-close', position: i })
         } else if (current === '[') {
             if (lastType === 'number') {
-                result.push({ type: 'operator', value: 'multiply-implicit', position: i })
+                result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             result.push({ type: 'matrix-open', position: i })
         } else if (current === ']') {

@@ -70,9 +70,9 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
         } else if (unaryType && b) {
             output.push({ type: unaryType, value: b })
         } else if (b) {
-            throw new ParserError(operator.position, 'invalidUnary', operator.value)
+            throw new ParserError(operator.position, 'invalidUnary', operator.symbol)
         } else {
-            throw new ParserError(operator.position, 'noOperand', operator.value)
+            throw new ParserError(operator.position, 'noOperand', operator.symbol)
         }
     }
 
