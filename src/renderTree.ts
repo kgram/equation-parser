@@ -1,7 +1,7 @@
 import { EquationNode } from './EquationNode'
 import { throwUnknownType } from './throwUnknownType'
 
-export default function showTree(tree: EquationNode) {
+export const renderTree = (tree: EquationNode) => {
     return pushTree(tree).join('\n')
 }
 

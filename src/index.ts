@@ -26,3 +26,5 @@ export type EquationNodeMatrix = EquationNode.EquationNodeMatrix
 export type EquationNodeParserError = EquationNode.EquationNodeParserError
 
 export { parse } from './parse'
+export { renderTree } from './renderTree'
+export { stringify } from './stringify'
