@@ -1,16 +1,21 @@
+import { EquationNode } from './EquationNode'
 import { ParserError } from './ParserError'
 import { tokenize } from './tokenize'
 import { parseSubexpression } from './parseExpression'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const parse = (input: string) => {
+export const parse = (input: string): EquationNode => {
     try {
         const tokens = tokenize(input)
 
         const { result, last, terminator } = parseSubexpression(input, tokens, 0)
 
         if (terminator !== 'end') {
-            throw new ParserError(tokens[last].position, 'expectedEnd')
+            throw new ParserError(tokens[last].position, tokens[last].position, 'expectedEnd')
+        }
+
+        if (result === null) {
+            throw new ParserError(tokens[last].position, tokens[last].position, 'expectedEnd')
         }
 
         return result
@@ -20,7 +25,8 @@ export const parse = (input: string) => {
                 type: 'parser-error',
                 equation: input,
                 errorType: error.type,
-                position: error.position,
+                start: error.start,
+                end: error.end,
                 values: error.values,
             }
         } else {

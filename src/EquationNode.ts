@@ -63,9 +63,10 @@ export type EquationNodeMatrix = {
 
 export type EquationNodeParserError = {
     type: 'parser-error',
-    errorType: 'numberWhitespace' | 'invalidNumber' | 'adjecentOperator' | 'invalidChar' | 'invalidUnary' | 'noOperand' | 'multipleExpressions' | 'matrixMixedDimension' | 'matrixEmpty' | 'vectorEmpty' | 'expectedEnd' | 'expectedSquareBracket' | 'expectedCloseParens' | 'operatorLast',
+    errorType: 'numberWhitespace' | 'invalidNumber' | 'adjecentOperator' | 'invalidChar' | 'invalidUnary' | 'noOperand' | 'multipleExpressions' | 'matrixMixedDimension' | 'matrixEmpty' | 'vectorEmpty' | 'expectedEnd' | 'expectedSquareBracket' | 'expectedCloseParens' | 'operatorLast' | 'emptyBlock',
     equation: string,
-    position: number,
+    start: number,
+    end: number,
     values: any[],
 }
 
