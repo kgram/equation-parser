@@ -11,7 +11,6 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint \"{src,tests}/**/*.ts\" rollup.config.js",
-    "build": "yarn build:types && yarn build:js",
     "types": "tsc -d --emitDeclarationOnly --outDir dist",
     "bundle": "rollup -c rollup.config.js",
     "prepare": "rimraf dist && yarn lint && yarn test && yarn types && yarn bundle"
