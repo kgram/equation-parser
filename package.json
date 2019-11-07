@@ -16,8 +16,12 @@
     "prepare": "rimraf dist && yarn lint && yarn test && yarn types && yarn bundle"
   },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
+  "bin": {
+    "parse-equation": "./scripts/cli"
+  },
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.7.0",
