@@ -1,10 +1,11 @@
 import { EquationNode } from './EquationNode'
+import { EquationParserError } from './EquationParserError'
 import { ParserError } from './ParserError'
 import { tokenize } from './tokenize'
 import { parseSubexpression } from './parseExpression'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const parse = (input: string): EquationNode => {
+export const parse = (input: string): EquationNode | EquationParserError => {
     try {
         const tokens = tokenize(input)
 

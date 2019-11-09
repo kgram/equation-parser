@@ -1,7 +1,12 @@
 import { EquationNode } from './EquationNode'
+import { EquationParserError } from './EquationParserError'
 import { throwUnknownType } from './throwUnknownType'
 
-export const renderTree = (tree: EquationNode) => {
+export const renderTree = (tree: EquationNode | EquationParserError) => {
+    if (tree.type === 'parser-error') {
+        return `${tree.errorType} error\n  ${tree.equation}\n  ${''.padStart(tree.start, ' ').padEnd(tree.end + 1, '^')}`
+    }
+
     return pushTree(tree).join('\n')
 }
 
@@ -109,11 +114,6 @@ function pushTree(tree: EquationNode, buffer: string[] = [], indent = '', indent
                     })
                 })
             }
-            break
-        case 'parser-error':
-            buffer.push(`${ownIndent}${tree.errorType} error`)
-            buffer.push(`${ownIndent}  ${tree.equation}`)
-            buffer.push(`${ownIndent}  ${''.padStart(tree.start, ' ').padEnd(tree.end + 1, '^')}`)
             break
         default:
             throwUnknownType(tree, (type) => `Equation tree to string: cannot resolve type "${type}"`)

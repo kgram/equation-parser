@@ -1,7 +1,11 @@
 import { EquationNode } from './EquationNode'
+import { EquationParserError } from './EquationParserError'
 import { throwUnknownType } from './throwUnknownType'
 
-export const stringify = (tree: EquationNode) => {
+export const stringify = (tree: EquationNode | EquationParserError) => {
+    if (tree.type === 'parser-error') {
+        return tree.equation
+    }
     const buffer: string[] = []
     stringifyTree(tree, buffer)
     return buffer.join('')
@@ -99,9 +103,6 @@ function stringifyTree(tree: EquationNode, buffer: string[]) {
                 }
             })
             buffer.push(']')
-            break
-        case 'parser-error':
-            buffer.push(tree.equation)
             break
         default:
             throwUnknownType(tree, (type) => `Equation tree to string: cannot resolve type "${type}"`)

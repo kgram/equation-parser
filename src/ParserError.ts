@@ -1,11 +1,11 @@
-import { EquationNodeParserError } from './EquationNode'
+import { EquationParserError } from './EquationParserError'
 
 export class ParserError extends Error {
     start: number
     end: number
-    type: EquationNodeParserError['errorType']
+    type: EquationParserError['errorType']
     values: any[]
-    constructor(start: number, end: number, type: EquationNodeParserError['errorType'], ...values: any[]) {
+    constructor(start: number, end: number, type: EquationParserError['errorType'], ...values: any[]) {
         super(`Internal ${type} parse error`)
         this.type = type
         this.start = start

@@ -61,15 +61,6 @@ export type EquationNodeMatrix = {
     values: EquationNode[][],
 }
 
-export type EquationNodeParserError = {
-    type: 'parser-error',
-    errorType: 'numberWhitespace' | 'invalidNumber' | 'adjecentOperator' | 'invalidChar' | 'invalidUnary' | 'noOperand' | 'multipleExpressions' | 'matrixMixedDimension' | 'matrixEmpty' | 'vectorEmpty' | 'expectedEnd' | 'expectedSquareBracket' | 'expectedCloseParens' | 'operatorLast' | 'emptyBlock',
-    equation: string,
-    start: number,
-    end: number,
-    values: any[],
-}
-
 export type EquationNode =
     | EquationNodeVariable
     | EquationNodeNumber
@@ -94,4 +85,3 @@ export type EquationNode =
     | EquationNodeGreaterThanEquals
     | EquationNodeApproximates
     | EquationNodeMatrix
-    | EquationNodeParserError

@@ -1,4 +1,5 @@
 import * as EquationNode from './EquationNode'
+import * as EquationParserError from './EquationParserError'
 export type EquationNode = EquationNode.EquationNode
 export type EquationNodeVariable = EquationNode.EquationNodeVariable
 export type EquationNodeNumber = EquationNode.EquationNodeNumber
@@ -23,7 +24,7 @@ export type EquationNodeLessThanEquals = EquationNode.EquationNodeLessThanEquals
 export type EquationNodeGreaterThanEquals = EquationNode.EquationNodeGreaterThanEquals
 export type EquationNodeApproximates = EquationNode.EquationNodeApproximates
 export type EquationNodeMatrix = EquationNode.EquationNodeMatrix
-export type EquationNodeParserError = EquationNode.EquationNodeParserError
+export type EquationParserError = EquationParserError.EquationParserError
 
 export { parse } from './parse'
 export { renderTree } from './renderTree'
