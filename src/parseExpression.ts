@@ -72,9 +72,10 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
         } else if (unaryType && b) {
             output.push({ type: unaryType, value: b })
         } else if (b) {
-            throw new ParserError(operator.position, operator.position + 1, 'invalidUnary', operator.symbol)
+            throw new ParserError(operator.position, operator.position, 'invalidUnary', operator.symbol)
         } else {
-            throw new ParserError(operator.position, operator.position + 1, 'noOperand', operator.symbol)
+            // No operands. This should never happen, all cases should be caught by operatorLast instead
+            throw new Error('Unexpected parser state, operator with no operands')
         }
     }
 
@@ -106,16 +107,11 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                 break
 
             case 'name':
-                if (getTokenType(i + 1) === 'parens-open' && getTokenType(i + 2) === 'parens-close') {
-                    // Argumentless function
-                    output.push({ type: 'function', name: token.value, args: [] })
-                    // Skip opening and closing parens in further parsing
-                    i += 2
-                } else if (getTokenType(i + 1) === 'parens-open') {
+                if (getTokenType(i + 1) === 'parens-open') {
                     // Function
                     const { results, last, terminator } = parseListExpression(input, tokens, i + 2)
                     if (terminator !== 'parens-close') {
-                        throw new ParserError(getTokenPosition(i + 1), getTokenPosition(last), 'expectedCloseParens')
+                        throw new ParserError(getTokenPosition(i + 1), getTokenPosition(last - 1), 'expectedCloseParens')
                     }
                     output.push({ type: 'function', name: token.value, args: results })
                     i = last
@@ -136,7 +132,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     while (getTokenType(current) === 'matrix-open') {
                         const { results, last, terminator } = parseListExpression(input, tokens, current + 1)
                         if (terminator !== 'matrix-close') {
-                            throw new ParserError(getTokenPosition(current), getTokenPosition(last), 'expectedSquareBracket')
+                            throw new ParserError(getTokenPosition(current), getTokenPosition(last - 1), 'expectedSquareBracket')
                         }
                         if (values.length > 0 && values[0].length !== results.length) {
                             throw new ParserError(getTokenPosition(current), getTokenPosition(last), 'matrixMixedDimension', values[0].length, results.length)
@@ -151,14 +147,11 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     if (getTokenType(current) !== 'matrix-close') {
                         throw new ParserError(getTokenPosition(i), getTokenPosition(current - 1), 'expectedSquareBracket')
                     }
-                    if (values.length === 0) {
-                        throw new ParserError(getTokenPosition(i), getTokenPosition(current), 'matrixEmpty')
-                    }
 
                     output.push({ type: 'matrix', n: values[0].length, m: values.length, values })
 
                     // Advance parsing past closing bracket
-                    i = current + 1
+                    i = current
                 } else {
                     // Parsing single vector
                     // [a,b,c]
