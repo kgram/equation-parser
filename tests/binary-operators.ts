@@ -65,3 +65,14 @@ test('exponentiation', () => {
         b: toVariable('a'),
     })
 })
+
+test('adjecent operators', () => {
+    expect(parse('3^*a')).toEqual({
+        type: 'parser-error',
+        errorType: 'adjecentOperator',
+        equation: '3^*a',
+        start: 1,
+        end: 2,
+        values: [],
+    })
+})

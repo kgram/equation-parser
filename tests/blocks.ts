@@ -37,4 +37,53 @@ test('with operator', () => {
     })
 })
 
+test('no close', () => {
+    expect(parse('(a')).toEqual({
+        type: 'parser-error',
+        errorType: 'expectedCloseParens',
+        equation: '(a',
+        start: 0,
+        end: 1,
+        values: [],
+    })
+    expect(parse('(a]')).toEqual({
+        type: 'parser-error',
+        errorType: 'expectedCloseParens',
+        equation: '(a]',
+        start: 0,
+        end: 1,
+        values: [],
+    })
+    expect(parse('(a,')).toEqual({
+        type: 'parser-error',
+        errorType: 'expectedCloseParens',
+        equation: '(a,',
+        start: 0,
+        end: 1,
+        values: [],
+    })
+})
+
+test('empty', () => {
+    expect(parse('()')).toEqual({
+        type: 'parser-error',
+        errorType: 'emptyBlock',
+        equation: '()',
+        start: 0,
+        end: 1,
+        values: [],
+    })
+})
+
+test('no open', () => {
+    expect(parse('a)')).toEqual({
+        type: 'parser-error',
+        errorType: 'expectedEnd',
+        equation: 'a)',
+        start: 1,
+        end: 1,
+        values: [],
+    })
+})
+
 

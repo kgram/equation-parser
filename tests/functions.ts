@@ -2,6 +2,19 @@ import { parse } from '../src'
 
 import toVariable from './helpers/toVariable'
 
+test('no arguments', () => {
+    expect(parse('f()')).toEqual({
+        type: 'function',
+        name: 'f',
+        args: [],
+    })
+    expect(parse('f2()')).toEqual({
+        type: 'function',
+        name: 'f2',
+        args: [],
+    })
+})
+
 test('single argument', () => {
     expect(parse('f(x)')).toEqual({
         type: 'function',

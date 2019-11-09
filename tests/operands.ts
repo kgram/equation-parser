@@ -11,6 +11,7 @@ test('parses integers', () => {
 test('parses floats', () => {
     expect(parse('0.5')).toEqual(toNumber(0.5))
     expect(parse('123.456')).toEqual(toNumber(123.456))
+    expect(parse('.2')).toEqual(toNumber('.2'))
 })
 
 test('rejects invalid number formats', () => {
@@ -18,14 +19,27 @@ test('rejects invalid number formats', () => {
         type: 'parser-error',
         errorType: 'invalidNumber',
         equation: '2.3.5',
-        position: 0,
+        start: 0,
+        end: 4,
         values: [],
     })
     expect(parse('2.')).toEqual({
         type: 'parser-error',
         errorType: 'invalidNumber',
         equation: '2.',
-        position: 0,
+        start: 0,
+        end: 1,
+        values: [],
+    })
+})
+
+test('invalid whitespace', () => {
+    expect(parse('1 2')).toEqual({
+        type: 'parser-error',
+        errorType: 'numberWhitespace',
+        equation: '1 2',
+        start: 0,
+        end: 2,
         values: [],
     })
 })
@@ -36,4 +50,15 @@ test('parses variables', () => {
     expect(parse('x_2')).toEqual(toVariable('x_2'))
     expect(parse('%')).toEqual(toVariable('%'))
     expect(parse('x_x_x_x_x_x')).toEqual(toVariable('x_x_x_x_x_x'))
+})
+
+test('invalid character', () => {
+    expect(parse('#')).toEqual({
+        type: 'parser-error',
+        errorType: 'invalidChar',
+        equation: '#',
+        start: 0,
+        end: 0,
+        values: ['#'],
+    })
 })

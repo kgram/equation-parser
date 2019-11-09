@@ -30,7 +30,8 @@ test('by operators', () => {
         type: 'parser-error',
         errorType: 'adjecentOperator',
         equation: '5--5',
-        position: 1,
+        start: 1,
+        end: 2,
         values: [],
     })
 
@@ -46,7 +47,8 @@ test('by operators', () => {
         type: 'parser-error',
         errorType: 'adjecentOperator',
         equation: '5*±5',
-        position: 1,
+        start: 1,
+        end: 2,
         values: [],
     })
 })
@@ -73,21 +75,35 @@ test('end of string', () => {
         type: 'parser-error',
         errorType: 'operatorLast',
         equation: '5+',
-        position: 1,
+        start: 1,
+        end: 1,
         values: [],
     })
     expect(parse('5-')).toEqual({
         type: 'parser-error',
         errorType: 'operatorLast',
         equation: '5-',
-        position: 1,
+        start: 1,
+        end: 1,
         values: [],
     })
     expect(parse('5±')).toEqual({
         type: 'parser-error',
         errorType: 'operatorLast',
         equation: '5±',
-        position: 1,
+        start: 1,
+        end: 1,
         values: [],
+    })
+})
+
+test('invalid unary operator', () => {
+    expect(parse('*5')).toEqual({
+        type: 'parser-error',
+        errorType: 'invalidUnary',
+        equation: '*5',
+        start: 0,
+        end: 0,
+        values: ['*'],
     })
 })
