@@ -47,7 +47,7 @@ export const tokenize = (input: string) => {
             i = end - 1
         } else if (current in operatorMap) {
             if (lastType === 'operator') {
-                throw new ParserError(i - 1, i - 1, 'adjecentOperator')
+                throw new ParserError(i - 1, i, 'adjecentOperator')
             }
             result.push({
                 type: 'operator',
