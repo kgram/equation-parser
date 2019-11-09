@@ -15,7 +15,7 @@ export const parse = (input: string): EquationNode => {
         }
 
         if (result === null) {
-            throw new ParserError(tokens[last].position, tokens[last].position, 'expectedEnd')
+            throw new ParserError(0, 0, 'expectedEnd')
         }
 
         return result
