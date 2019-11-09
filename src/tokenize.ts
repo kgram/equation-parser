@@ -56,14 +56,14 @@ export const tokenize = (input: string) => {
                 position: i,
             })
         } else if (current === '(') {
-            if (lastType === 'number') {
+            if (lastType === 'number' || lastType === 'parens-close' || lastType === 'matrix-close') {
                 result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             result.push({ type: 'parens-open', position: i })
         } else if (current === ')') {
             result.push({ type: 'parens-close', position: i })
         } else if (current === '[') {
-            if (lastType === 'number') {
+            if (lastType === 'number' || lastType === 'name' || lastType === 'parens-close') {
                 result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             result.push({ type: 'matrix-open', position: i })
