@@ -1,6 +1,6 @@
 {
   "name": "equation-parser",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Parse equations to an AST",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
