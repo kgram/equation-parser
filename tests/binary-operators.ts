@@ -76,3 +76,11 @@ test('adjecent operators', () => {
         values: [],
     })
 })
+
+test('operator placeholder', () => {
+    expect(parse(`3 ? a`)).toEqual({
+        type: 'operator-placeholder',
+        a: toNumber(3),
+        b: toVariable('a'),
+    })
+})

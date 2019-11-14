@@ -61,6 +61,17 @@ export type EquationNodeMatrix = {
     values: EquationNode[][],
 }
 
+export type EquationNodeOperandPlaceholder = {
+    type: 'operand-placeholder',
+}
+
+export type EquationNodeFunctionPlaceholder = {
+    type: 'function-placeholder',
+    args: EquationNode[],
+}
+export type EquationNodeOperatorPlaceholder = EquationNodeTwoValues<'operator-placeholder'>
+export type EquationNodeOperatorUnaryPlaceholder = EquationNodeOneValue<'operator-unary-placeholder'>
+
 export type EquationNode =
     | EquationNodeVariable
     | EquationNodeNumber
@@ -85,3 +96,7 @@ export type EquationNode =
     | EquationNodeGreaterThanEquals
     | EquationNodeApproximates
     | EquationNodeMatrix
+    | EquationNodeOperandPlaceholder
+    | EquationNodeFunctionPlaceholder
+    | EquationNodeOperatorPlaceholder
+    | EquationNodeOperatorUnaryPlaceholder

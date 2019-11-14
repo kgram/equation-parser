@@ -62,3 +62,7 @@ test('invalid character', () => {
         values: ['#'],
     })
 })
+
+test('operand placeholder', () => {
+    expect(parse('_')).toEqual({ type: 'operand-placeholder' })
+})

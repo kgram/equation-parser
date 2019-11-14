@@ -107,3 +107,10 @@ test('invalid unary operator', () => {
         values: ['*'],
     })
 })
+
+test('unary operator placeholder', () => {
+    expect(parse(`? 3`)).toEqual({
+        type: 'operator-unary-placeholder',
+        value: toNumber(3),
+    })
+})

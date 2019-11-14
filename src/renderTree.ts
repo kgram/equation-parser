@@ -26,7 +26,15 @@ const operatorMap = {
     'divide-fraction': '/',
     'divide-inline': '÷',
     'power': '^',
+    'operator-placeholder': '?',
 }
+
+const unaryOperatorMap = {
+    'positive': '+',
+    'negative': '-',
+    'positive-negative': '±',
+    'operator-unary-placeholder': '?',
+} as const
 
 function pushTree(tree: EquationNode, buffer: string[] = [], indent = '', indentType: 'initial' | 'regular' | 'last' = 'initial') {
     let ownIndent = indent
@@ -49,15 +57,10 @@ function pushTree(tree: EquationNode, buffer: string[] = [], indent = '', indent
             buffer.push(`${ownIndent}"${tree.name}"`)
             break
         case 'positive':
-            buffer.push(`${ownIndent}-`)
-            pushTree(tree.value, buffer, descendantIndent, 'last')
-            break
         case 'negative':
-            buffer.push(`${ownIndent}-`)
-            pushTree(tree.value, buffer, descendantIndent, 'last')
-            break
         case 'positive-negative':
-            buffer.push(`${ownIndent}±`)
+        case 'operator-unary-placeholder':
+            buffer.push(ownIndent + unaryOperatorMap[tree.type])
             pushTree(tree.value, buffer, descendantIndent, 'last')
             break
         case 'block':
@@ -79,12 +82,19 @@ function pushTree(tree: EquationNode, buffer: string[] = [], indent = '', indent
         case 'divide-fraction':
         case 'divide-inline':
         case 'power':
+        case 'operator-placeholder':
             buffer.push(ownIndent + operatorMap[tree.type])
             pushTree(tree.a, buffer, descendantIndent, 'regular')
             pushTree(tree.b, buffer, descendantIndent, 'last')
             break
         case 'function':
             buffer.push(`${ownIndent}${tree.name}()`)
+            tree.args.forEach((arg, idx) => {
+                pushTree(arg, buffer, descendantIndent, idx < tree.args.length - 1 ? 'regular' : 'last')
+            })
+            break
+        case 'function-placeholder':
+            buffer.push(`${ownIndent}<placeholder>()`)
             tree.args.forEach((arg, idx) => {
                 pushTree(arg, buffer, descendantIndent, idx < tree.args.length - 1 ? 'regular' : 'last')
             })
@@ -114,6 +124,9 @@ function pushTree(tree: EquationNode, buffer: string[] = [], indent = '', indent
                     })
                 })
             }
+            break
+        case 'operand-placeholder':
+            buffer.push(`${ownIndent}<placeholder>`)
             break
         default:
             throwUnknownType(tree, (type) => `Equation tree to string: cannot resolve type "${type}"`)

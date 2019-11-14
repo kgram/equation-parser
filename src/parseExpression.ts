@@ -21,13 +21,17 @@ export const precedence = {
     'multiply-cross': 3,
     'divide-fraction': 3,
     'divide-inline': 3,
+
     'power': 4,
+
+    'operator-placeholder': 5,
 }
 
 export const unaryOperatorMap = {
     'plus': 'positive',
     'minus': 'negative',
     'plus-minus': 'positive-negative',
+    'operator-placeholder': 'operator-unary-placeholder',
 } as const
 
 export const rightAssociativeOperators = ['power']
@@ -113,8 +117,14 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     if (terminator !== 'parens-close') {
                         throw new ParserError(getTokenPosition(i + 1), getTokenPosition(last - 1), 'expectedCloseParens')
                     }
-                    output.push({ type: 'function', name: token.value, args: results })
+                    if (token.value === '_') {
+                        output.push({ type: 'function-placeholder', args: results })
+                    } else {
+                        output.push({ type: 'function', name: token.value, args: results })
+                    }
                     i = last
+                } else if (token.value === '_') {
+                    output.push({ type: 'operand-placeholder' })
                 } else {
                     // Variable
                     output.push({ type: 'variable', name: token.value })
@@ -190,7 +200,8 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                         break
                     }
 
-                    addOperator(operators.pop()!)
+                    operators.pop()
+                    addOperator(other)
                 }
                 operators.push(token)
                 break

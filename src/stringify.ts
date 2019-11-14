@@ -27,6 +27,14 @@ const operatorMap = {
     'divide-fraction': ' / ',
     'divide-inline': ' ÷ ',
     'power': ' ^ ',
+    'operator-placeholder': ' ? ',
+} as const
+
+const unaryOperatorMap = {
+    'positive': '+',
+    'negative': '-',
+    'positive-negative': '±',
+    'operator-unary-placeholder': '?',
 } as const
 
 function stringifyTree(tree: EquationNode, buffer: string[]) {
@@ -38,15 +46,10 @@ function stringifyTree(tree: EquationNode, buffer: string[]) {
             buffer.push(tree.name)
             break
         case 'positive':
-            buffer.push('+')
-            stringifyTree(tree.value, buffer)
-            break
         case 'negative':
-            buffer.push('-')
-            stringifyTree(tree.value, buffer)
-            break
         case 'positive-negative':
-            buffer.push('±')
+        case 'operator-unary-placeholder':
+            buffer.push(unaryOperatorMap[tree.type])
             stringifyTree(tree.value, buffer)
             break
         case 'block':
@@ -69,12 +72,14 @@ function stringifyTree(tree: EquationNode, buffer: string[]) {
         case 'less-than-equals':
         case 'greater-than-equals':
         case 'approximates':
+        case 'operator-placeholder':
             stringifyTree(tree.a, buffer)
             buffer.push(operatorMap[tree.type])
             stringifyTree(tree.b, buffer)
             break
         case 'function':
-            buffer.push(tree.name)
+        case 'function-placeholder':
+            buffer.push(tree.type === 'function' ? tree.name : '_')
             buffer.push('(')
             tree.args.forEach((arg, idx) => {
                 if (idx > 0) {
@@ -103,6 +108,9 @@ function stringifyTree(tree: EquationNode, buffer: string[]) {
                 }
             })
             buffer.push(']')
+            break
+        case 'operand-placeholder':
+            buffer.push('_')
             break
         default:
             throwUnknownType(tree, (type) => `Equation tree to string: cannot resolve type "${type}"`)

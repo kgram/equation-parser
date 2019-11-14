@@ -64,3 +64,7 @@ test('spacing', () => {
         args: [toVariable('x')],
     })
 })
+
+test('operand placeholder', () => {
+    expect(parse('_(x)')).toEqual({ type: 'function-placeholder', args: [toVariable('x')] })
+})

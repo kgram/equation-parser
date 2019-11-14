@@ -20,4 +20,5 @@ export const operatorMap = {
     '∕': 'divide-fraction', // Division Slash (U+2215)
     '÷': 'divide-inline', // Division Sign (U+00F7)
     '^': 'power',
+    '?': 'operator-placeholder',
 } as const
