@@ -20,7 +20,6 @@ test('invalid decimal', () => {
         equation: '2.',
         start: 0,
         end: 1,
-        values: [],
     })
     expect(parse('2..1')).toEqual({
         type: 'parser-error',
@@ -28,7 +27,6 @@ test('invalid decimal', () => {
         equation: '2..1',
         start: 0,
         end: 3,
-        values: [],
     })
     expect(parse('1.2.3')).toEqual({
         type: 'parser-error',
@@ -36,7 +34,6 @@ test('invalid decimal', () => {
         equation: '1.2.3',
         start: 0,
         end: 4,
-        values: [],
     })
 })
 
@@ -47,6 +44,5 @@ test('invalid whitespace', () => {
         equation: '1 2',
         start: 0,
         end: 2,
-        values: [],
     })
 })

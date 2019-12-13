@@ -44,7 +44,6 @@ test('no close', () => {
         equation: '(a',
         start: 0,
         end: 1,
-        values: [],
     })
     expect(parse('(a]')).toEqual({
         type: 'parser-error',
@@ -52,7 +51,6 @@ test('no close', () => {
         equation: '(a]',
         start: 0,
         end: 1,
-        values: [],
     })
     expect(parse('(a,')).toEqual({
         type: 'parser-error',
@@ -60,7 +58,6 @@ test('no close', () => {
         equation: '(a,',
         start: 0,
         end: 1,
-        values: [],
     })
 })
 
@@ -71,7 +68,6 @@ test('empty', () => {
         equation: '()',
         start: 0,
         end: 1,
-        values: [],
     })
 })
 
@@ -82,7 +78,6 @@ test('no open', () => {
         equation: 'a)',
         start: 1,
         end: 1,
-        values: [],
     })
 })
 

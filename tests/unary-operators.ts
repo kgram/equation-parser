@@ -32,7 +32,6 @@ test('by operators', () => {
         equation: '5--5',
         start: 1,
         end: 2,
-        values: [],
     })
 
     expect(parse('±5-5')).toEqual({
@@ -49,7 +48,6 @@ test('by operators', () => {
         equation: '5*±5',
         start: 1,
         end: 2,
-        values: [],
     })
 })
 
@@ -77,7 +75,6 @@ test('end of string', () => {
         equation: '5+',
         start: 1,
         end: 1,
-        values: [],
     })
     expect(parse('5-')).toEqual({
         type: 'parser-error',
@@ -85,7 +82,6 @@ test('end of string', () => {
         equation: '5-',
         start: 1,
         end: 1,
-        values: [],
     })
     expect(parse('5±')).toEqual({
         type: 'parser-error',
@@ -93,7 +89,6 @@ test('end of string', () => {
         equation: '5±',
         start: 1,
         end: 1,
-        values: [],
     })
 })
 
@@ -104,7 +99,7 @@ test('invalid unary operator', () => {
         equation: '*5',
         start: 0,
         end: 0,
-        values: ['*'],
+        symbol: '*',
     })
 })
 

@@ -36,7 +36,6 @@ test('unclosed inner', () => {
         equation: '[[a,b',
         start: 1,
         end: 4,
-        values: [],
     })
 })
 
@@ -47,7 +46,6 @@ test('unclosed outer', () => {
         equation: '[[a,b]',
         start: 0,
         end: 5,
-        values: [],
     })
 })
 
@@ -58,7 +56,8 @@ test('mixed dimensions', () => {
         equation: '[[a,b][c]]',
         start: 6,
         end: 8,
-        values: [2, 1],
+        lengthExpected: 2,
+        lengthReceived: 1,
     })
 })
 
@@ -69,7 +68,6 @@ test('empty dimensions', () => {
         equation: '[[]]',
         start: 1,
         end: 2,
-        values: [],
     })
 })
 

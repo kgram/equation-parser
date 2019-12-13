@@ -24,7 +24,6 @@ test('vector invalid with nested vector', () => {
         equation: '[[a], [b], [c]]',
         start: 0,
         end: 3,
-        values: [],
     })
 })
 
@@ -35,6 +34,5 @@ test('vector empty', () => {
         equation: '[]',
         start: 0,
         end: 1,
-        values: [],
     })
 })

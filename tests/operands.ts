@@ -21,7 +21,6 @@ test('rejects invalid number formats', () => {
         equation: '2.3.5',
         start: 0,
         end: 4,
-        values: [],
     })
     expect(parse('2.')).toEqual({
         type: 'parser-error',
@@ -29,7 +28,6 @@ test('rejects invalid number formats', () => {
         equation: '2.',
         start: 0,
         end: 1,
-        values: [],
     })
 })
 
@@ -40,7 +38,6 @@ test('invalid whitespace', () => {
         equation: '1 2',
         start: 0,
         end: 2,
-        values: [],
     })
 })
 
@@ -59,7 +56,7 @@ test('invalid character', () => {
         equation: '#',
         start: 0,
         end: 0,
-        values: ['#'],
+        character: '#',
     })
 })
 

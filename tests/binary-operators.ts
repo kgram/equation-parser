@@ -73,7 +73,6 @@ test('adjecent operators', () => {
         equation: '3^*a',
         start: 1,
         end: 2,
-        values: [],
     })
 })
 
