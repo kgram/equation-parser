@@ -27,14 +27,14 @@ export const tokenize = (input: string) => {
         } else if (isCharNumber.test(current)) {
             const end = endOfPattern(input, isCharNumber, i)
             if (lastType === 'number') {
-                throw new ParserError(result[result.length - 1].position, end - 1, 'numberWhitespace')
+                throw new ParserError(result[result.length - 1].position, end - 1, 'numberWhitespace', {})
             }
             if (lastType === 'name' || lastType === 'parens-close' || lastType === 'matrix-close') {
                 result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             const value = input.substring(i, end)
             if (!isValidNumber.test(value)) {
-                throw new ParserError(i, end - 1, 'invalidNumber')
+                throw new ParserError(i, end - 1, 'invalidNumber', {})
             }
             result.push({ type: 'number', value, position: i })
             i = end - 1
@@ -47,7 +47,7 @@ export const tokenize = (input: string) => {
             i = end - 1
         } else if (current in operatorMap) {
             if (lastType === 'operator') {
-                throw new ParserError(i - 1, i, 'adjecentOperator')
+                throw new ParserError(i - 1, i, 'adjecentOperator', {})
             }
             result.push({
                 type: 'operator',
@@ -72,7 +72,7 @@ export const tokenize = (input: string) => {
         } else if (current === ',') {
             result.push({ type: 'comma', position: i })
         } else {
-            throw new ParserError(i, i, 'invalidChar', current)
+            throw new ParserError(i, i, 'invalidChar', { character: current })
         }
 
         lastType = result[result.length - 1].type

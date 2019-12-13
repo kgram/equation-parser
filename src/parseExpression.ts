@@ -76,7 +76,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
         } else if (unaryType && b) {
             output.push({ type: unaryType, value: b })
         } else if (b) {
-            throw new ParserError(operator.position, operator.position, 'invalidUnary', operator.symbol)
+            throw new ParserError(operator.position, operator.position, 'invalidUnary', { symbol: operator.symbol })
         } else {
             // No operands. This should never happen, all cases should be caught by operatorLast instead
             throw new Error('Unexpected parser state, operator with no operands')
@@ -85,14 +85,14 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
 
     const prepareResult = (terminator: Terminator, last: number) => {
         if (tokens[last - 1].type === 'operator') {
-            throw new ParserError(getTokenPosition(last - 1), getTokenPosition(last - 1), 'operatorLast')
+            throw new ParserError(getTokenPosition(last - 1), getTokenPosition(last - 1), 'operatorLast', {})
         }
         while(operators.length > 0) {
             addOperator(operators.pop()!)
         }
 
         if (output.length > 1) {
-            throw new ParserError(getTokenPosition(startAt), getTokenPosition(last - 1), 'multipleExpressions')
+            throw new ParserError(getTokenPosition(startAt), getTokenPosition(last - 1), 'multipleExpressions', {})
         }
 
         if (output.length === 0) {
@@ -115,7 +115,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     // Function
                     const { results, last, terminator } = parseListExpression(input, tokens, i + 2)
                     if (terminator !== 'parens-close') {
-                        throw new ParserError(getTokenPosition(i + 1), getTokenPosition(last - 1), 'expectedCloseParens')
+                        throw new ParserError(getTokenPosition(i + 1), getTokenPosition(last - 1), 'expectedCloseParens', {})
                     }
                     if (token.value === '_') {
                         output.push({ type: 'function-placeholder', args: results })
@@ -142,20 +142,20 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     while (getTokenType(current) === 'matrix-open') {
                         const { results, last, terminator } = parseListExpression(input, tokens, current + 1)
                         if (terminator !== 'matrix-close') {
-                            throw new ParserError(getTokenPosition(current), getTokenPosition(last - 1), 'expectedSquareBracket')
+                            throw new ParserError(getTokenPosition(current), getTokenPosition(last - 1), 'expectedSquareBracket', {})
                         }
                         if (values.length > 0 && values[0].length !== results.length) {
-                            throw new ParserError(getTokenPosition(current), getTokenPosition(last), 'matrixMixedDimension', values[0].length, results.length)
+                            throw new ParserError(getTokenPosition(current), getTokenPosition(last), 'matrixMixedDimension', { lengthExpected: values[0].length, lengthReceived: results.length })
                         }
                         if (results.length === 0) {
-                            throw new ParserError(getTokenPosition(current), getTokenPosition(last), 'matrixEmpty')
+                            throw new ParserError(getTokenPosition(current), getTokenPosition(last), 'matrixEmpty', {})
                         }
                         values.push(results)
                         current = last + 1
                     }
                     // The last vector-component should be followed by a closing bracket
                     if (getTokenType(current) !== 'matrix-close') {
-                        throw new ParserError(getTokenPosition(i), getTokenPosition(current - 1), 'expectedSquareBracket')
+                        throw new ParserError(getTokenPosition(i), getTokenPosition(current - 1), 'expectedSquareBracket', {})
                     }
 
                     output.push({ type: 'matrix', n: values[0].length, m: values.length, values })
@@ -168,10 +168,10 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
 
                     const { results, last, terminator } = parseListExpression(input, tokens, i + 1)
                     if (terminator !== 'matrix-close') {
-                        throw new ParserError(getTokenPosition(i), getTokenPosition(last - 1), 'expectedSquareBracket')
+                        throw new ParserError(getTokenPosition(i), getTokenPosition(last - 1), 'expectedSquareBracket', {})
                     }
                     if (results.length === 0) {
-                        throw new ParserError(getTokenPosition(i), getTokenPosition(last), 'vectorEmpty')
+                        throw new ParserError(getTokenPosition(i), getTokenPosition(last), 'vectorEmpty', {})
                     }
 
                     output.push({ type: 'matrix', n: 1, m: results.length, values: results.map((value) => [value]) })
@@ -182,10 +182,10 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
             case 'parens-open': {
                 const { result, last, terminator } = parseSubexpression(input, tokens, i + 1)
                 if (terminator !== 'parens-close') {
-                    throw new ParserError(getTokenPosition(i), getTokenPosition(last - 1), 'expectedCloseParens')
+                    throw new ParserError(getTokenPosition(i), getTokenPosition(last - 1), 'expectedCloseParens', {})
                 }
                 if (result === null) {
-                    throw new ParserError(getTokenPosition(i), getTokenPosition(last), 'emptyBlock')
+                    throw new ParserError(getTokenPosition(i), getTokenPosition(last), 'emptyBlock', {})
                 }
                 output.push({ type: 'block', child: result })
                 i = last
