@@ -4,7 +4,6 @@ export type EquationParserError = { type: 'parser-error', equation: string, star
     | { errorType: 'adjecentOperator' }
     | { errorType: 'invalidChar', character: string }
     | { errorType: 'invalidUnary', symbol: string }
-    | { errorType: 'noOperand' }
     | { errorType: 'multipleExpressions' }
     | { errorType: 'matrixMixedDimension', lengthExpected: number, lengthReceived: number }
     | { errorType: 'matrixEmpty' }
