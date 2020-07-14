@@ -24,7 +24,7 @@
     "bin"
   ],
   "bin": {
-    "equation-parser": "./scripts/cli"
+    "equation-parser": "./bin/cli.js"
   },
   "dependencies": {},
   "devDependencies": {
