@@ -1,12 +1,7 @@
 import { ParserError } from './ParserError'
 import { Token } from './Token'
 import { operatorMap } from './operatorMap'
-
-const isWhitespace = /\s/
-const isCharNumber = /[0-9.]/
-// Leading numbers doesn't matter, since number check is before name check
-const isCharName = /[0-9A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u01BF\u0391-\u03c9'"%‰°_∞]/
-const isValidNumber = /^([0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$/
+import { charNamePattern, charNumberPattern, numberPattern, whitespacePattern } from './patterns'
 
 function endOfPattern(input: string, pattern: RegExp, start: number) {
     let end = start
@@ -22,10 +17,10 @@ export const tokenize = (input: string) => {
 
     for (let i = 0; i < input.length; i++) {
         const current = input[i]
-        if (isWhitespace.test(current)) {
+        if (whitespacePattern.test(current)) {
             continue
-        } else if (isCharNumber.test(current)) {
-            const end = endOfPattern(input, isCharNumber, i)
+        } else if (charNumberPattern.test(current)) {
+            const end = endOfPattern(input, charNumberPattern, i)
             if (lastType === 'number') {
                 throw new ParserError(result[result.length - 1].position, end - 1, 'numberWhitespace', {})
             }
@@ -33,16 +28,17 @@ export const tokenize = (input: string) => {
                 result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
             const value = input.substring(i, end)
-            if (!isValidNumber.test(value)) {
+            if (!numberPattern.test(value)) {
                 throw new ParserError(i, end - 1, 'invalidNumber', {})
             }
             result.push({ type: 'number', value, position: i })
             i = end - 1
-        } else if (isCharName.test(current)) {
+        // Doesn't matter that this can also match a number, we already checked for that above
+        } else if (charNamePattern.test(current)) {
             if (lastType === 'number' || lastType === 'name' || lastType === 'parens-close' || lastType === 'matrix-close') {
                 result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
-            const end = endOfPattern(input, isCharName, i)
+            const end = endOfPattern(input, charNamePattern, i)
             result.push({ type: 'name', value: input.substring(i, end), position: i })
             i = end - 1
         } else if (current in operatorMap) {
