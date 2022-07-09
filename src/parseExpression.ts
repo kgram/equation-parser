@@ -84,7 +84,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
     }
 
     const prepareResult = (terminator: Terminator, last: number) => {
-        if (tokens[last - 1].type === 'operator') {
+        if (last > 0 && tokens[last - 1].type === 'operator') {
             throw new ParserError(getTokenPosition(last - 1), getTokenPosition(last - 1), 'operatorLast', {})
         }
         while(operators.length > 0) {
