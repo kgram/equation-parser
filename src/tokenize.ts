@@ -38,9 +38,13 @@ export const tokenize = (input: string) => {
             if (lastType === 'number' || lastType === 'name' || lastType === 'parens-close' || lastType === 'matrix-close') {
                 result.push({ type: 'operator', value: 'multiply-implicit', symbol: ' ', position: i })
             }
-            const end = endOfPattern(input, charNamePattern, i)
-            result.push({ type: 'name', value: input.substring(i, end), position: i })
-            i = end - 1
+            if (current === '_') {
+                result.push({ type: 'name', value: '_', position: i })
+            } else {
+                const end = endOfPattern(input, charNamePattern, i)
+                result.push({ type: 'name', value: input.substring(i, end), position: i })
+                i = end - 1
+            }
         } else if (current in operatorMap) {
             if (lastType === 'operator') {
                 throw new ParserError(i - 1, i, 'adjecentOperator', {})
