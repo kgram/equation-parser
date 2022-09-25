@@ -34,7 +34,13 @@ export const unaryOperatorMap = {
     'operator-placeholder': 'operator-unary-placeholder',
 } as const
 
-export const rightAssociativeOperators = ['power']
+export const leftAssociativeOperators = [
+    'minus',
+    'plus-minus',
+    'divide-fraction',
+    'divide-inline',
+    'operator-placeholder',
+]
 
 type Terminator =
     | TokenMatrixClose['type']
@@ -196,7 +202,7 @@ export const parseSubexpression = (input: string, tokens: Token[], startAt: numb
                     const other = operators[operators.length - 1]
                     const tokenPrecedence = precedence[token.value]
                     const otherPrecedence = precedence[other.value]
-                    if (otherPrecedence < tokenPrecedence || (rightAssociativeOperators.includes(other.value) && otherPrecedence === tokenPrecedence)) {
+                    if (otherPrecedence < tokenPrecedence || (!leftAssociativeOperators.includes(other.value) && otherPrecedence === tokenPrecedence)) {
                         break
                     }
 
