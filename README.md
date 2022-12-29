@@ -12,6 +12,52 @@ or
 yarn add equation-parser
 ```
 
+## General format
+Numbers are supported in decimal-notation only, using `.` as decimal separator (note that adding an exponent can easily be achieved using `* 10^n`).
+
+Variables can contain the following characters:
+
+* Latin-1 supplement letters (`U+00C0-U+00D6`)
+* Latin-1 supplement letters (`U+00D8-U+00F6`)
+* Latin-1 supplement letters (`U+00F8-U+00FF`)
+* Latin extended-A (`U+0100-U+017F`)
+* Latin extended-B letters (`U+0180-U+01BF`)
+* Greek letters (`U+0391-U+03c9`)
+* `'`, `"`, `%`, `‰`, `°`, `∞`
+* `_` used for variable indexing/subscripting
+
+A `_` not surrounded by variable-characters is considered a placeholder. A placeholder can be used instead of an operand (variable/number/function-name) to create a valid, parseable equation when a value is still unknown.
+
+Whitespace is ignored, except when separating two variables (`a b`, interpreted as implicit multiplication), a variable and a number (`a 2`, interpreted as implicit multiplication), two numbers (`1 2`, a `numberWhitespace`-error).
+
+Variables must start with a non-number, non-underscore. Leading numbers will instead be interpreted as implicit multiplication (`2x` is `2 * x`). Leading underscores will be interpreted as implicit multiplication with a placeholder (`_a` is `_ * a`).
+
+The following operators are supported:
+
+* Plus: `+`
+* Minus: `-`, `−` (Minus Sign U+2212)
+* Plus-minus: `±`
+* Implicit multiplication (error on vectors): ` `
+* Dot multiplication (scalar product on vectors): `*`, `∗` (Asterisk Operator U+2217), `⋅` (Dot Operator U+22C5)
+* Cross multiplication (vector product on vectors): `×` (Multiplication Sign U+00D7), `✕` (Multiplication X U+2715)
+* Fraction: `/`, `∕` (Division Slash U+2215)
+* Inline division (differentiated for rendering purposes): `÷` (Division Sign U+00F7)
+* Power: `^`
+* Placeholder operator: `?`
+    * Like the operand-placeholder, the operator placeholder kan be used to create a parseable equation when parts of it is still missing.
+
+The following comparisons are supported:
+* Equals: `=`
+* Less than: `<`
+* Greater than: `>`
+* Less than or equals: `≤`
+* Greater than or equals: `≥`
+* Approximately equals: `≈`
+
+Regular parenthesis can be used to group parts of an expression or to denote a function, in usual math fashion.
+
+Square brackets `[]` can be used to create vectors or matrices. Matrices are defined with nested brackets as rows: `[[row1col1,row1col2][row2col1,row2col2]]`. Vectors are defined as if a standalone row `[a, b]`. In the parsed result, a vector parses identically to a matrix with one column, so `[a, b]` is completely equivalent to `[[a][b]]`.
+
 ## API
 
 ### `parse(input: string) => EquationNode | EquationParserError`
@@ -122,13 +168,6 @@ $ equation-parser tree "1+2*3+a(b)"
 └─ a()
    └─ "b"
 ```
-
-## Parsing result
-The result of the parsing should follow common math precedence, such as addition wrapping multiplication.
-
-Whitespace is ignored, except when separating two numbers (`1 2`), two variables (`a b`) or a variable and a number (`a 2`). Two numbers results in an `numberWhitespace`-error. The others results in implicit multiplication.
-
-Variables must start with a non-number. Leading numbers will instead be interpreted as implicit multiplication (`2x` is `2 * x`).
 
 ## AST – `EquationNode`
 `EquationNode`s are plain objects, identified by their `type` property. To avoid stressing the type system, operator precedence is not enforced through the type system.
